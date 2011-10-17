@@ -27,11 +27,13 @@ module Cucumber
         end
       end
       
-      def set_run_list(name, run_list)
+      #now you can use set_run_list to add more than one cookbook 
+      #to a testlab's runlist set_run_list('testlab', 'role[app1]',   'recipe[dothis]')
+      def set_run_list(name, *run_list)
         rl = Hash.new
-        a = Array.new
-        a << run_list
-        rl['run_list'] = a
+        #a = Array.new
+        #a << run_list
+        rl['run_list'] = run_list
         first_boot = File.join(get_root(name), '/etc/chef/first-boot.json')
         File.open(first_boot, 'w') do |f|
           f.puts rl.to_json
@@ -39,11 +41,13 @@ module Cucumber
       end
 
       def run_chef_first_time(name)
-        %x[chroot #{get_root(name)} /bin/bash -c 'chef-client -j /etc/chef/first-boot.json -N #{name} > /dev/null 2>&1']
+        #%x[chroot #{get_root(name)} /bin/bash -c 'chef-client -j /etc/chef/first-boot.json -N #{name} > /dev/null 2>&1']
+        %x[chroot #{get_root(name)} /bin/bash -c 'chef-client -j /etc/chef/first-boot.json -N #{name}']
       end
 
       def run_chef(name)
-        %x[chroot #{get_root(name)} /bin/bash -c 'chef-client > /dev/null 2>&1']
+        #%x[chroot #{get_root(name)} /bin/bash -c 'chef-client > /dev/null 2>&1']
+        %x[chroot #{get_root(name)} /bin/bash -c 'chef-client']
       end
       
       def databag_item_from_file(file)
@@ -62,7 +66,7 @@ module Cucumber
         client_rb = File.join(get_root(name), 'etc/chef/client.rb')
         File.open(client_rb, 'w') do |f|
           f.puts "log_level        :info"
-          f.puts "log_location     STDOUT"
+          f.puts "log_location     '/var/log/chef.log'"
           f.puts "chef_server_url  'https://api.opscode.com/organizations/#{orgname}'"
           f.puts "validation_client_name '#{orgname}-validator'"
           f.puts "node_name 'cucumber-chef-#{name}'"
