@@ -58,9 +58,15 @@ class CucumberChef < Thor
       provisioner = ::Cucumber::Chef::Provisioner.new
       server = provisioner.build_test_lab(config, $stdout)
       sleep(10)
+      puts "uploading cookbook"
       provisioner.upload_cookbook(config)
+      puts "done"
+      puts "uploading role"
       provisioner.upload_role(config)
+      puts "done"
+      puts "bootstrapping node"
       provisioner.bootstrap_node(server.dns_name, config)
+      puts "done"
     rescue ::Cucumber::Chef::Error => err
       error(err.message)
     end

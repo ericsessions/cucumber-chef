@@ -14,11 +14,14 @@ module Cucumber
 
       def bootstrap_node(dns_name, config)
         template_file = File.join(File.dirname(__FILE__), "templates/ubuntu10.04-gems.erb")
+        puts "running server bootstrap"
         run_bootstrap(config, template_file, dns_name, chef_node_name(config), "role[test_lab_test]")
+        puts "tagging node"
         tag_node(config)
       end
 
       def build_controller(dns_name, config)
+        puts "building the controller"
         template_file = File.join(File.dirname(__FILE__), "templates/controller.erb")
         run_bootstrap(config, template_file, dns_name, 'cucumber-chef-controller')
       end
