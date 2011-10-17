@@ -16,8 +16,21 @@ package "bison" do
   action :install
 end
 
+package "git-core" do
+  action :install
+end
+
 node['cucumber-chef'][:gems].each do |gem|
     gem_package gem
+end
+
+##install cucumber-chef gem
+bash 'install cucumber-chef gem' do
+  cwd '/tmp'
+  code <<-EOH
+  git clone git@github.com:ericsessions/cucumber-chef.git . -q
+  rake install
+  EOH
 end
 
 directory "/root/.ssh" do

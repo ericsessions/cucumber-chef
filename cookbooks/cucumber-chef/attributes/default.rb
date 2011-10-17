@@ -1,1 +1,1 @@
-default['cucumber-chef'][:gems] = %w{rspec cucumber cucumber-nagios cucumber-chef}
+default['cucumber-chef'][:gems] = %w{rspec cucumber cucumber-nagios}
