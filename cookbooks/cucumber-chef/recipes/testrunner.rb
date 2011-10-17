@@ -29,6 +29,7 @@ bash 'install cucumber-chef gem' do
   cwd '/tmp'
   code <<-EOH
   git clone git@github.com:ericsessions/cucumber-chef.git . -q
+  bundle install
   rake install
   EOH
 end
